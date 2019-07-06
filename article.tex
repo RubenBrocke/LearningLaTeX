@@ -1,0 +1,162 @@
+\documentclass{scrartcl}
+\usepackage{xcolor}
+\usepackage[T1]{fontenc}
+\usepackage{listings}
+
+\author{Ruben Brocke}
+\title{Programming Language Design}
+\subtitle{Creating a programmer friendly language}
+\date{\today}
+
+\begin{document}
+    \pagecolor{yellow!10}
+    \maketitle
+    \newpage
+
+    \tableofcontents
+    \newpage
+
+    \section{Introduction}
+    \paragraph{}
+    If we look at the first programming languages ever created
+    we can see a trend of minimalism, self-service and limited abstraction.
+    Throughout the years this has changed. Languages like C++ and Java
+    paved the way for more abstraction, garbage collection and faster production.
+    Over the years languages have changed from a "machine" friendly syntax
+    to a "programmer" friendly syntax and have as a result of this been
+    easier to read and faster to prototype.
+    \paragraph{}
+    The "old" languages are however still widely used. The best example for
+    this is the C language that has been thriving for almost 50 years. 
+    It boasts amazing performance and little overhead compared to newer languages.
+    When programming in C howerver, programmers spend more time translating their
+    human thinking to machine thinking. With current year technology we are
+    able to create systems that run incredibly fast and can do anything we dream of
+    yet we are restricted by our ability to translate out thinking to our machine overlords
+    \newpage
+
+    \section{Preparation}
+    \subsection{Classification}
+    \paragraph{}
+    First of all there needs to be some common way of *ranking* different 
+    language syntaxis. This rating should be able to show us how easily 
+    the syntax can be used to create an abstract program. There are multiple
+    problems when creating such a classification system. These problems mostly
+    come in the form of subjectivity. Some programmers feel more at home in
+    the machine way of thinking and might even prefer this way. There are however
+    many programmers who are frustrated with the lack of abstraction and quick
+    prototyping that might allow them to instantly turn their idea's into working code.
+
+    \paragraph{}
+    To create this classification we first need to create some classes to use 
+    in our classification. These classes should be coherent and easily explainable.
+    They need to give insight in the ability of a language syntax to model human abstract thinking.
+    To be able quantify human abstract thinking we first need to understand how
+    out brains tend to see the world around us. Incidentally we will find out how
+    object oriented programming languages gain an edge over their competitors
+    \newpage
+
+    \section{Purely functional}
+    \subsection{Human abstract thinking}
+    \paragraph{}
+    Human brains have evolved to understand the world around us. To understand that
+    movement of a nearby bush might be a predator, or smoke in the distance
+    signaling fire and thus civilization (or a forest fire). In short, Human brains
+    work with cause-effect. The better the correlation between this cause and effect
+    the more confidence we get in our thoughts. This is one of the beautifully things 
+    about computers. They too work with causal cause-effect connections. Nothing in a
+    computer does what it was not told to. There are no self moving parts. In other words,
+    Computers are deterministic. 
+
+    \paragraph{}
+    It is this deterministic quality that we as human programmers enjoy. It allows
+    us to write programs the way we expect them to. It allows is to be able to say that
+    when running a program twice, The same thing will happen. However in the current state
+    of programming and programming language we do not have confidence in ourselves. 
+    We use debuggers and other tools, not to find problems in the computers, but problems in
+    ourselves. because in the end, Humans are not deterministic.
+
+    \subsection{Deterministic vs. non deterministic}
+    \paragraph{}
+    In the end we find a seeming incompatibility between man and machine.
+    We find an impossibility in the way either of the systems work. However
+    not all is lost. There is plenty of determinism to be found in humans.
+    Most comes in the form of competence. When a human has been able to train
+    on something deterministic over and over it is able to start imitating a
+    deterministic system. 
+    
+    \paragraph{}
+    Athletes who train every day on the same task become
+    capable of deterministic behavior. They start to show a repetitive pattern
+    in their result arriving from the repetitive nature of their craft. This also
+    happens in programmers. After multiple years of working the a deterministic 
+    system that is programming. They start to show confidence and competence. and
+    yet, There it seems to be unable for even the most skilled of programmers (like
+    their athlete counterpart) to be deterministic 100\% of the time.
+
+    \subsection{Forcing determinism in humans}
+    \paragraph{}
+    To create a programming language suitable for programmers. One quality it might
+    have to contains is the ability to ease it's creator into the deterministic mindset.
+    A simple way of providing this, is by making sure the creator is unable to add
+    seemingly nondeterministic behavior, also known as "side effects". Side effects
+    refere to the ability of a program to change it's internal state. The problem happens
+    when this internal state is invisible and incomprehensible for the programmer.
+    The programmer becomes convinced their program is non deterministic and therefor 
+    loses confidence in their craft. 
+    
+    \paragraph{}
+    Many programming languages are already able to create programs with no
+    side effects. These languages are known as purely functional languages. 
+    The selling point of purely functional languages are their ability to 
+    write programs using only functions. Languages in this catagory are:
+    Haskell, Elm and (in a weird way) Lambda calculus. They all have First
+    class and higher-order functions and at most a non mutable state.
+    \newpage 
+
+    \section{Object oriented programming}
+    \subsection{Objects and brains}
+    \paragraph{}
+    Another thing the human brain loves to do is think of everything as an object.
+    These objects can be part of a larger object or themselves consist of sub-objects.
+    This allows for an easy way of thinking about things around us because in the
+    end, everything we see is made out of "something" else. However there are some things
+    in our world that cannot be further divided by the "what objects is that object made from"
+    operator. For example when we try to disassemble a chair object we might conclude that
+    it is made up of legs, a seat and something to rest your back on. When trying to 
+    subdivide the legs of our chair however, we are unable to find a meaningful subdivision.
+    The best we might find is "wood" or "steel"
+
+    \subsection{Objects vs. Materials}
+    \paragraph{}
+    We as humans can intuitively understand that objects are made out of materials.
+    These materials are what give the object it's properties. When a chair is made out
+    of wood it might be cheaper than one made out of steel. It might however also break 
+    a lot earlier or even go up in flames. The properties given via materials are
+    independent on the object they are created into. The material doesn't care what it
+    became. It just stays what it has always been.
+
+    \paragraph{}
+    To make this specific we can use some special syntax to model this connection.
+    This syntax is knows as the Backus–Naur form and is a notation technique for context-free
+    grammar. first we will write down our object correlation using normal english and then we
+    can try to translate that to Backus–Naur form.
+    \newline
+    In english:
+    \newline
+    \begin{enumerate}
+        \item Everything is a collection of objects.
+        \item Objects are either made up of sub-objects or are created from a material.
+        \item Materials can contain properties that model the material.
+        \item Properties (of materials) are not mutable.
+    \end{enumerate}
+
+    In Backus–Naur form:
+
+    \begin{description}
+        \item <everything> ::= <object> | <object><everything>
+    \end{description}
+
+
+
+\end{document}
