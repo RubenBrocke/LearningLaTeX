@@ -2,6 +2,7 @@
 \usepackage{xcolor}
 \usepackage[T1]{fontenc}
 \usepackage{listings}
+\usepackage{amsmath}
 
 \author{Ruben Brocke}
 \title{Programming Language Design}
@@ -10,14 +11,17 @@
 
 \begin{document}
     \pagecolor{yellow!10}
-    \maketitle
+    \begin{titlepage}
+        \clearpage
+        \maketitle
+        \thispagestyle{empty}
+    \end{titlepage}
     \newpage
 
     \tableofcontents
     \newpage
 
     \section{Introduction}
-    \paragraph{}
     If we look at the first programming languages ever created
     we can see a trend of minimalism, self-service and limited abstraction.
     Throughout the years this has changed. Languages like C++ and Java
@@ -35,11 +39,10 @@
     yet we are restricted by our ability to translate out thinking to our machine overlords
     \newpage
 
-    \section{Preparation}
+    \section{Design}
     \subsection{Classification}
-    \paragraph{}
     First of all there needs to be some common way of *ranking* different 
-    language syntaxis. This rating should be able to show us how easily 
+    language syntaxes. This rating should be able to show us how easily 
     the syntax can be used to create an abstract program. There are multiple
     problems when creating such a classification system. These problems mostly
     come in the form of subjectivity. Some programmers feel more at home in
@@ -56,9 +59,8 @@
     object oriented programming languages gain an edge over their competitors
     \newpage
 
-    \section{Purely functional}
-    \subsection{Human abstract thinking}
-    \paragraph{}
+    \subsection{Purely functional}
+    \paragraph{Human abstract thinking}
     Human brains have evolved to understand the world around us. To understand that
     movement of a nearby bush might be a predator, or smoke in the distance
     signaling fire and thus civilization (or a forest fire). In short, Human brains
@@ -68,7 +70,7 @@
     computer does what it was not told to. There are no self moving parts. In other words,
     Computers are deterministic. 
 
-    \paragraph{}
+    \subparagraph{}
     It is this deterministic quality that we as human programmers enjoy. It allows
     us to write programs the way we expect them to. It allows is to be able to say that
     when running a program twice, The same thing will happen. However in the current state
@@ -76,8 +78,7 @@
     We use debuggers and other tools, not to find problems in the computers, but problems in
     ourselves. because in the end, Humans are not deterministic.
 
-    \subsection{Deterministic vs. non deterministic}
-    \paragraph{}
+    \paragraph{Deterministic vs. non deterministic}
     In the end we find a seeming incompatibility between man and machine.
     We find an impossibility in the way either of the systems work. However
     not all is lost. There is plenty of determinism to be found in humans.
@@ -85,7 +86,7 @@
     on something deterministic over and over it is able to start imitating a
     deterministic system. 
     
-    \paragraph{}
+    \subparagraph{}
     Athletes who train every day on the same task become
     capable of deterministic behavior. They start to show a repetitive pattern
     in their result arriving from the repetitive nature of their craft. This also
@@ -94,29 +95,26 @@
     yet, There it seems to be unable for even the most skilled of programmers (like
     their athlete counterpart) to be deterministic 100\% of the time.
 
-    \subsection{Forcing determinism in humans}
-    \paragraph{}
+    \paragraph{Forcing determinism in humans}
     To create a programming language suitable for programmers. One quality it might
     have to contains is the ability to ease it's creator into the deterministic mindset.
     A simple way of providing this, is by making sure the creator is unable to add
     seemingly nondeterministic behavior, also known as "side effects". Side effects
-    refere to the ability of a program to change it's internal state. The problem happens
+    refer to the ability of a program to change it's internal state. The problem happens
     when this internal state is invisible and incomprehensible for the programmer.
     The programmer becomes convinced their program is non deterministic and therefor 
     loses confidence in their craft. 
     
-    \paragraph{}
+    \subparagraph{}
     Many programming languages are already able to create programs with no
     side effects. These languages are known as purely functional languages. 
     The selling point of purely functional languages are their ability to 
     write programs using only functions. Languages in this catagory are:
     Haskell, Elm and (in a weird way) Lambda calculus. They all have First
     class and higher-order functions and at most a non mutable state.
-    \newpage 
 
-    \section{Object oriented programming}
-    \subsection{Objects and brains}
-    \paragraph{}
+    \subsection{Object oriented programming}
+    \paragraph{Objects and brains}
     Another thing the human brain loves to do is think of everything as an object.
     These objects can be part of a larger object or themselves consist of sub-objects.
     This allows for an easy way of thinking about things around us because in the
@@ -127,36 +125,161 @@
     subdivide the legs of our chair however, we are unable to find a meaningful subdivision.
     The best we might find is "wood" or "steel"
 
-    \subsection{Objects vs. Materials}
-    \paragraph{}
-    We as humans can intuitively understand that objects are made out of materials.
-    These materials are what give the object it's properties. When a chair is made out
-    of wood it might be cheaper than one made out of steel. It might however also break 
-    a lot earlier or even go up in flames. The properties given via materials are
-    independent on the object they are created into. The material doesn't care what it
-    became. It just stays what it has always been.
-
-    \paragraph{}
-    To make this specific we can use some special syntax to model this connection.
+    \paragraph{Specifying Objects}
+    To make this specific we can use some special syntax to model these correlations.
     This syntax is knows as the Backus–Naur form and is a notation technique for context-free
     grammar. first we will write down our object correlation using normal english and then we
     can try to translate that to Backus–Naur form.
     \newline
     In english:
-    \newline
     \begin{enumerate}
         \item Everything is a collection of objects.
-        \item Objects are either made up of sub-objects or are created from a material.
-        \item Materials can contain properties that model the material.
-        \item Properties (of materials) are not mutable.
+        \item Objects are made up of sub-objects.
+        \item Objects can contain non mutable properties.
     \end{enumerate}
 
     In Backus–Naur form:
 
-    \begin{description}
-        \item <everything> ::= <object> | <object><everything>
-    \end{description}
+    \begin{align*}
+         <everything> &::= <object> | <object><everything> \\
+         <object> &::= <object><object> \\
+         <object> &::= <property><object> \\
+    \end{align*}
 
+    \subparagraph{}
+    There are a couple of things that need explaining when we look
+    at the Backus–Naur form. First of all we need to model the collections
+    to make use of recursion. When we (in english) say that everything is 
+    collection of objects we see this as a big bucket with objects in it.
+    The Backus–Naur form however does not have a way of specifying 
+    collections. It fixes this by using recursion. Say everything is
+    made up of multiple objects. We can then create an everything containing the 
+    first object and another everything. That everything contains the second
+    object and so forth for the other objects. This does mess with our english
+    understanding of the word "everything" but math doesn't care.
 
+    \paragraph{Other languages}
+    A lot of object oriented languages currently available make use of the
+    "everything is an object" rule. Most of those however allow some kind of
+    mutable state. pretending like a chair can suddenly change the fact that
+    it has 4 legs to 6 legs without it begin a new chair with new
+    functionality and thus being stateful. 
 
+    \subparagraph{Javascript}
+    Javascript is one of those languages that purely sees an object as a
+    collection of properties. It does not care what real world object 
+    this might be modeling and will happily add whatever to it's objects.
+    Not only the values but the properties themselves are mutable.
+    \begin{lstlisting}
+        chair = { [leg, leg, leg, leg], seat }
+        chair.legs = [] // no legs anymore
+    \end{lstlisting}
+
+    \subparagraph{C\#}
+    C\# is a bit more restrictive with what it defines as an object. Generally
+    these objects are classes which the programmer can create. Classes have a
+    predefined set of properties and functionality who's value is mutable.
+    \begin{lstlisting}
+        class Chair
+        {
+            public Leg[] legs
+            public Seat seat
+        }
+    \end{lstlisting}
+    
+    \subparagraph{Haskell $\lambda$}
+    Haskell has something else again. Instead of classes or objects it uses
+    typeclasses. Don't let the name fool you because they're quite different from
+    the C\# classes. A typeclass can be seen as a sort of interface. It models
+    behavior and not properties.
+    \begin{lstlisting}
+        data Chair = Chair Leg Leg Leg Leg Seat
+    \end{lstlisting}
+
+    \paragraph{Human friendly object orienting}
+    In a new language we would look for an easy to understand syntax that is
+    able to model what we see around us. It should for example be able to
+    say that a chair always has a collection of legs. The amount of legs
+    defines the chair. Any change in legs would lead to the creation of a new
+    chair and with that be a new object. This should be obvious from syntax.
+
+    \subsection{Words > symbols}
+    \paragraph{Translating}
+    When writing a program we humans prefer to be able to read it as if it were
+    english. If it is not we will frequently think of some translation that makes
+    it easier to understand. For example the following statement: $x = 4$ we
+    translate to "x is equal to 4". Of course it would be counter-productive for
+    any language to expect the programmer to write "is equal to" every time they
+    set the value of a variable. For these easy to learn translation we prefer
+    symbols. There are some statements in programming however that we don't like
+    to translate. A good example of this is the $foreach$ operator found in many
+    languages. Math does have some way of writing this down in symbols. this being:
+    $\forall x \in A$ which could be translated to "for all x in A" which looks
+    like our foreach. This is however a hassle to write down and does not intuitively
+    show what is happening. To give a concrete example we can write some function
+    that doubles every number from 0 to 100.
+        \begin{lstlisting}
+            foreach n in 0..100
+                n = n * 2
+        \end{lstlisting}
+    We can also write this in the symbol way like this:
+    \begin{equation*}
+        \forall x \in \left\{ 0,...,100 \right\} x = x * 2
+    \end{equation*}
+    In terms of readability (maybe not elegance) the first example would be better.
+
+    \paragraph{Code Blocks}
+    Another construct that is often used in object oriented languages is the use
+    of code blocks. These often use the \{ and \} as limiters (most C-like languages)
+    but can also use "do" and "end" (in the case of ruby) or tab indentation (python).
+    If we try our translation technique on code blocks for an if statement we often
+    get the "do" and "end" like ruby. for example:
+    \begin{lstlisting}
+        if (something)
+        {    
+            function1()  
+        }
+        else
+        {
+            function2()
+        }
+    \end{lstlisting}
+    We would translate this statement to "if something then do function1 else
+    do function2 and then end". containing the words "then", "do" and "end". 
+
+    \subsection{Inferred static typing}
+    Lot's of programming languages make a difference between "5" and "five".
+    This is because $"five" + "five" \neq "ten"$ but $5 + 5 = 5$. In other
+    words some data has different functionality from others. Some language choose
+    to make this completely unambiguous by forcing you to specify what type
+    of data it is. Other languages allow for conversion between data types.
+    which will effectively make $"5" == 5$. 
+
+    \paragraph{Static typing}
+    Static typing is the act of not changing the type of a variable. The type
+    needs to be clear before the program is run and cannot be changed. Statically
+    typed languages do allow the creation of a different data type using another.
+    For example we can do $5.toString()$ and that will give us the string "5".
+
+    \paragraph{Type inference}
+    Another technique used by some language is type inference. This is the act
+    of assuming data types based on their values. For example if we do $x = 5$
+    we can infer x is of type Integer or Number. When we however do $x = "5"$
+    we can infer x is of type String. Lastly let us consider something like this:
+    \begin{lstlisting}
+        variable = new Chair()
+    \end{lstlisting}
+    We can infer that variable is now of type chair. When we later try this:
+    $variable = 5$ we can tell the user that we know "variable" is of type Chair
+    and 5 is not of type Chair.
+
+    \subsection{Summary}
+    To summarize there are 3 qualities we want our human friendly programming
+    language to have. these are:
+    \begin{enumerate}
+        \item Purely functional to avoid side effects
+        \item Object oriented to model the real world
+        \item Words over Symbols to create readability
+        \item Inferred static typing for ease and safety
+    \end{enumerate}
 \end{document}
