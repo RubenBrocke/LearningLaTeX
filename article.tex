@@ -40,25 +40,6 @@
     \newpage
 
     \section{Design}
-    \subsection{Classification}
-    First of all there needs to be some common way of *ranking* different 
-    language syntaxes. This rating should be able to show us how easily 
-    the syntax can be used to create an abstract program. There are multiple
-    problems when creating such a classification system. These problems mostly
-    come in the form of subjectivity. Some programmers feel more at home in
-    the machine way of thinking and might even prefer this way. There are however
-    many programmers who are frustrated with the lack of abstraction and quick
-    prototyping that might allow them to instantly turn their idea's into working code.
-
-    \paragraph{}
-    To create this classification we first need to create some classes to use 
-    in our classification. These classes should be coherent and easily explainable.
-    They need to give insight in the ability of a language syntax to model human abstract thinking.
-    To be able quantify human abstract thinking we first need to understand how
-    out brains tend to see the world around us. Incidentally we will find out how
-    object oriented programming languages gain an edge over their competitors
-    \newpage
-
     \subsection{Purely functional}
     \paragraph{Human abstract thinking}
     Human brains have evolved to understand the world around us. To understand that
@@ -282,4 +263,64 @@
         \item Words over Symbols to create readability
         \item Inferred static typing for ease and safety
     \end{enumerate}
+    \newpage
+
+    \section{Syntax}
+    \paragraph{}
+    Now that it's clear what features we want our language to have can start thinking
+    about some of the specifics. We can start defining different grammar for every 
+    type of token we want. These tokens then need to abide by some syntax that specifies
+    in what order these tokens are expected to be in. Lastly we will take a look at how
+    we can infer types from different token syntaxes.
+
+    \subsection{Literal values}
+    \paragraph{}
+    Literal values are values which are not stored in variables. They exist on their own
+    with a visual representation to go along with it. 
+    \begin{lstlisting}
+         5  // int or number
+        "5" // String
+        /5/ // Regex
+    \end{lstlisting}
+    Literal types come in 2 forms. They either have limiters or they do not. Because we
+    often program with numbers we assign the limiter-less grammar to the numbers.
+    Other literals (at least) need some way of specifying where they start. It is possible
+    to use another character, like a newline or space, to limit the end of the literal
+    character sequence. With this in mind we can define some basic literal grammar
+
+    \paragraph{Number}
+    Many programming languages define multiple number types ranging from integer to
+    double and from long to float. These types were created to ease the translation
+    to the machine languages. Machines can technically only work with either 32 bit
+    or 64 bit integer numbers. This means that when we want to display something
+    that does not fit in either of these numbers or ever worse is not even an integer
+    we have to invent some new way of encoding to represent these new number formats.
+
+    \subparagraph{}
+    Nowadays there exist standards of encoding for these new numbers. These can easily
+    be used by any language to implement their new fancy number system. Yet we still
+    expect the programmer to choose between different representations of what in the
+    end we all just call "a number" Many languages allow for some conversion between
+    these different number types. But these conversions only ever happen when the
+    programmer notices there is some functionality that one number encoding that
+    another does have. For example: $x = 10 / 3$ 
+
+    \subparagraph{}
+    We might choose to manually change the type of the number to an encoding with a
+    decimal point. This would allow us to express the number as $3.33333...$ in contrast
+    to just $3$. But we don't actually care about this conversion. We know that just $3$
+    is a wrong answer. We can also easily see that when we divide $10$ by $3$ we do
+    not get a nice integer number. Any computer system could choose to instantly change
+    it's encoding to the new system. But to help te computer out we choose not to. 
+
+    \subparagraph{Number Grammar} 
+    We've decided that there should be no difference in type between $3$ and $3.33$ and
+    possibly even $3^{333}$. These can all be classified as being a "Number". To express this
+    in some grammar we use a simple regex:
+
+    \begin{lstlisting}
+        DecimalNumber = /(-[1-9])?\d*(\.\d+)?/
+    \end{lstlisting}
+
+    Of course decimal isn't the only way of writing down numbers. 
 \end{document}
